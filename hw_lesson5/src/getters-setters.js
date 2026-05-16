@@ -1,4 +1,4 @@
-const car = {
+export const car = {
     name: 'toyota',
     color: 'red',
     year: 2020,
@@ -13,15 +13,15 @@ const car = {
         performance: ['turbocharged', 'sport mode']
     },
 
-
-    summary() {
+    get summary() {
         return `The ${this.name} is a ${this.color} car from ${this.year} with a ${this.engine.type} engine producing ${this.engine.horsepower} horsepower. It offers comfort features like ${this.key_characteristics.comfort.join(' and ')}, safety features such as ${this.key_characteristics.safety.join(' and ')}, and performance options including ${this.key_characteristics.performance.join(' and ')}.`;
     },
 
-    countKeys() {
-        return Object.keys(this);
+    get comfortFeatures() {
+        return this.key_characteristics.comfort;
+    },
+
+    set comfortFeatures(features) {
+        this.key_characteristics.comfort.push(...features);
     }
 };
-
-console.log(car.summary());
-console.log(car.countKeys());
