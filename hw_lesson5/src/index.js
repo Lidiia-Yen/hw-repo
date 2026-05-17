@@ -16,5 +16,5 @@ console.log(sum(strings));
 console.log('---- getters and setters:-----');
 console.log(car.summary);
 console.log(car.comfortFeatures);
-car.comfortFeatures = ['memory foam seats', 'heated seats'];
+car.comfortFeatures = ['', 'heated seats'];
 console.log(car.comfortFeatures);

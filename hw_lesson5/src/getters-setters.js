@@ -20,8 +20,10 @@ export const car = {
     get comfortFeatures() {
         return this.key_characteristics.comfort;
     },
-
     set comfortFeatures(features) {
-        this.key_characteristics.comfort.push(...features);
+        if (!features.every(f => typeof f === 'string' && f.trim().length > 0)) {
+            throw new TypeError('each comfort feature must be a non-empty string');
+        }
+        this.key_characteristics.comfort = features;
     }
 };
