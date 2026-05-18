@@ -1,0 +1,29 @@
+export const car = {
+    name: 'toyota',
+    color: 'red',
+    year: 2020,
+
+    engine:{
+        type: 'V6',
+        horsepower: 300
+    },
+    key_characteristics: {
+        comfort: ['leather seats', 'climate control'],
+        safety: ['airbags', 'ABS'],
+        performance: ['turbocharged', 'sport mode']
+    },
+
+    get summary() {
+        return `The ${this.name} is a ${this.color} car from ${this.year} with a ${this.engine.type} engine producing ${this.engine.horsepower} horsepower. It offers comfort features like ${this.key_characteristics.comfort.join(' and ')}, safety features such as ${this.key_characteristics.safety.join(' and ')}, and performance options including ${this.key_characteristics.performance.join(' and ')}.`;
+    },
+
+    get comfortFeatures() {
+        return this.key_characteristics.comfort;
+    },
+    set comfortFeatures(features) {
+        if (!features.every(f => typeof f === 'string' && f.trim().length > 0)) {
+            throw new TypeError('each comfort feature must be a non-empty string');
+        }
+        this.key_characteristics.comfort = features;
+    }
+};
