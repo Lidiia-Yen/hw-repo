@@ -1,7 +1,6 @@
-export function calculate_Sum (some_array: number[] | string[]): number | string {
-    let sum: number | string = typeof some_array[0] === 'string' ? '' : 0 as number | string;
-    for (const element of some_array) {
-        sum = (sum as number) + (element as number);
+export function calculate_Sum(some_array: number[] | string[]): number | string {
+    if (typeof some_array[0] === 'number') {
+        return (some_array as number[]).reduce((sum, acc) => sum + acc, 0);
     }
-    return sum;
+    return some_array.join('');
 }
