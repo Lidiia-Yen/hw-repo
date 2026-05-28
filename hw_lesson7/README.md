@@ -1,0 +1,1 @@
+see here the instructions https://coda.io/d/Copy-of-QA-Automation_ddngJqSeHUt/TS_suhLQUIn#_lu7SQsC-
