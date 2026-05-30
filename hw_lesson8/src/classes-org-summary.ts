@@ -1,4 +1,4 @@
-import { IGitHubOrg } from './github_interface.ts';
+import { GitHubOrg } from './github-interface.ts';
 
 
 export class OrgSummary {
@@ -24,7 +24,7 @@ export class OrgReport extends OrgSummary {
     public organization_summary: OrgSummary;
     public report: string;
     
-    public constructor(org: IGitHubOrg) {
+    public constructor(org: GitHubOrg) {
         super(org); 
         this.organization_summary = new OrgSummary(org);
         this.report = `Report for Organization: ${this.name}\nID: ${this.id}\nURL: ${this.profileUrl}\n${'Description: ' + (this.description ? this.description : 'No description available')}`;

@@ -1,4 +1,4 @@
-export interface IGitHubOrg {
+export interface GitHubOrg {
     login: string;
     id: number;
     node_id: string;
