@@ -1,0 +1,6 @@
+{
+    "require": ["tsx", "./hooks/global-hooks.ts"],
+    "spec": "tests/**/*.spec.ts",
+    "extension": ["ts"],
+    "timeout": 10000
+}
