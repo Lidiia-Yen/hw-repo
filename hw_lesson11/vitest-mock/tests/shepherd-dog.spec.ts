@@ -26,10 +26,8 @@ describe('ShepherdDog isolated tests', () => {
     it('should interact with pet', () => {
         // arrange
         const expectedOutput = 'Rex has eaten, slept, run and sat down.';
-
         // act
         const result = shepherdDog.interactWithPet();
-
         // assert
         expect(result).toBe(expectedOutput);
     });
@@ -37,7 +35,6 @@ describe('ShepherdDog isolated tests', () => {
     it('should call eat, sleep, run, sit during interaction', () => {
         // act
         shepherdDog.interactWithPet();
-
         // assert
         expect(shepherdDog.interactWithPet).toHaveBeenCalledOnce();
     });
@@ -45,10 +42,8 @@ describe('ShepherdDog isolated tests', () => {
     it('should call method herdSheep', () => {
         //arrange
         const expectedOutput = 'Lui is herding sheep.';
-
         //act
         const result = shepherdDog.herdSheep();
-
         //assert
         expect(result).toEqual(expectedOutput);
     });
