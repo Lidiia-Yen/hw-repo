@@ -1,0 +1,305 @@
+{
+  "info": {
+    "_postman_id": "d1dbe8b7-cc0c-4b30-82c6-24649cda01c0",
+    "name": "Joke_collection",
+    "schema": "https://schema.getpostman.com/json/collection/v2.1.0/collection.json",
+    "_exporter_id": "8833297"
+  },
+  "item": [
+    {
+      "name": "random_joke",
+      "event": [
+        {
+          "listen": "test",
+          "script": {
+            "exec": [
+              "pm.test('status code 200', function(){\r",
+              "    pm.response.to.have.status(200)\r",
+              "})\r",
+              "\r",
+              "pm.test('Content-Type is application/json', () => {\r",
+              "    pm.expect(pm.response.headers.get('Content-Type')).to.include('application/json')\r",
+              "});\r",
+              "\r",
+              "pm.test('Response contains type, setup, punchline, id', () => {\r",
+              "    const jsonData = pm.response.json();\r",
+              "    pm.expect(jsonData).to.have.property('type');\r",
+              "    pm.expect(jsonData).to.have.property('setup');\r",
+              "    pm.expect(jsonData).to.have.property('punchline');\r",
+              "    pm.expect(jsonData).to.have.property('id');\r",
+              "})\r",
+              ""
+            ],
+            "type": "text/javascript",
+            "packages": {},
+            "requests": {}
+          }
+        }
+      ],
+      "request": {
+        "method": "GET",
+        "header": [],
+        "url": {
+          "raw": "{{base_url}}/random_joke",
+          "host": [
+            "{{base_url}}"
+          ],
+          "path": [
+            "random_joke"
+          ]
+        }
+      },
+      "response": []
+    },
+    {
+      "name": "ten_random_jokes",
+      "event": [
+        {
+          "listen": "test",
+          "script": {
+            "exec": [
+              "const responseData = pm.response.json();\r",
+              "pm.collectionVariables.set(\"ten_jokes\", JSON.stringify(responseData));\r",
+              "\r",
+              "pm.test('status code 200', function(){\r",
+              "    pm.response.to.have.status(200)\r",
+              "});\r",
+              "\r",
+              "pm.test('Returns an array of 10 jokes', () => {\r",
+              "    pm.expect(pm.response.json()).to.be.an('array').with.lengthOf(10)});\r",
+              "\r",
+              "pm.test('All ids are unique', () => {\r",
+              "    const ids = pm.response.json().map(j => j.id);\r",
+              "    pm.expect(new Set(ids).size).to.equal(ids.length);\r",
+              "});\r",
+              ""
+            ],
+            "type": "text/javascript",
+            "packages": {},
+            "requests": {}
+          }
+        }
+      ],
+      "request": {
+        "method": "GET",
+        "header": [],
+        "url": {
+          "raw": "{{base_url}}/random_ten",
+          "host": [
+            "{{base_url}}"
+          ],
+          "path": [
+            "random_ten"
+          ]
+        }
+      },
+      "response": []
+    },
+    {
+      "name": "joke_by_id",
+      "event": [
+        {
+          "listen": "prerequest",
+          "script": {
+            "exec": [
+              "const stringifiedData = pm.collectionVariables.get(\"ten_jokes\");",
+              "if (stringifiedData) {",
+              "    const IdsList = JSON.parse(stringifiedData);",
+              "    pm.collectionVariables.set(\"ids\", JSON.stringify(IdsList.map(j => j.id))); ",
+              "    const randomJoke = IdsList[Math.floor(Math.random() * IdsList.length)];",
+              "    pm.collectionVariables.set(\"random_joke_id\", randomJoke.id); ",
+              "};"
+            ],
+            "type": "text/javascript",
+            "packages": {},
+            "requests": {}
+          }
+        },
+        {
+          "listen": "test",
+          "script": {
+            "exec": [
+              "pm.test('status code 200', function(){\r",
+              "    pm.response.to.have.status(200)\r",
+              "});\r",
+              "\r",
+              "pm.expect(pm.response).to.be.an('object').and.not.an('array');\r",
+              "\r",
+              "pm.test('Returned id matches requested id', () => {\r",
+              "    pm.expect(pm.response.json().id).to.equal(pm.collectionVariables.get(\"random_joke_id\"))\r",
+              "});\r",
+              ""
+            ],
+            "type": "text/javascript",
+            "packages": {},
+            "requests": {}
+          }
+        }
+      ],
+      "request": {
+        "method": "GET",
+        "header": [],
+        "url": {
+          "raw": "{{base_url}}/jokes/{{random_joke_id}}",
+          "host": [
+            "{{base_url}}"
+          ],
+          "path": [
+            "jokes",
+            "{{random_joke_id}}"
+          ]
+        }
+      },
+      "response": []
+    },
+    {
+      "name": "joke_types",
+      "event": [
+        {
+          "listen": "test",
+          "script": {
+            "exec": [
+              "pm.test('status code 200', function(){\r",
+              "    pm.response.to.have.status(200)\r",
+              "});\r",
+              "\r",
+              "pm.test('Response is a non-empty array', () => {\r",
+              "    const body = pm.response.json();\r",
+              "    pm.expect(body).to.be.an('array').that.is.not.empty\r",
+              "});\r",
+              "\r",
+              "pm.test('All types are strings', () => {\r",
+              "    const body = pm.response.json();\r",
+              "    body.forEach(type => pm.expect(type).to.be.a('string').that.is.not.empty);\r",
+              "    });"
+            ],
+            "type": "text/javascript",
+            "packages": {},
+            "requests": {}
+          }
+        },
+        {
+          "listen": "prerequest",
+          "script": {
+            "exec": [
+              ""
+            ],
+            "type": "text/javascript",
+            "packages": {},
+            "requests": {}
+          }
+        }
+      ],
+      "request": {
+        "method": "GET",
+        "header": [],
+        "url": {
+          "raw": "{{base_url}}/types",
+          "host": [
+            "{{base_url}}"
+          ],
+          "path": [
+            "types"
+          ]
+        }
+      },
+      "response": []
+    },
+    {
+      "name": "random_number_of_jokes",
+      "event": [
+        {
+          "listen": "prerequest",
+          "script": {
+            "exec": [
+              "pm.variables.set(\"random_number\", String(Math.floor(Math.random()*3 + 1)));"
+            ],
+            "type": "text/javascript",
+            "packages": {},
+            "requests": {}
+          }
+        },
+        {
+          "listen": "test",
+          "script": {
+            "exec": [
+              "pm.test('status code 200', function(){",
+              "    pm.response.to.have.status(200)",
+              "});",
+              "",
+              "pm.test('Returns exact number jokes', () => {",
+              "    const expectedCount = parseInt(pm.variables.get(\"random_number\"), 10);",
+              "    pm.expect(pm.response.json()).to.be.an('array').with.lengthOf(expectedCount);",
+              "});"
+            ],
+            "type": "text/javascript",
+            "packages": {},
+            "requests": {}
+          }
+        }
+      ],
+      "request": {
+        "method": "GET",
+        "header": [],
+        "url": {
+          "raw": "{{base_url}}/jokes/random/{{random_number}}",
+          "host": [
+            "{{base_url}}"
+          ],
+          "path": [
+            "jokes",
+            "random",
+            "{{random_number}}"
+          ]
+        }
+      },
+      "response": []
+    }
+  ],
+  "event": [
+    {
+      "listen": "prerequest",
+      "script": {
+        "type": "text/javascript",
+        "packages": {},
+        "requests": {},
+        "exec": [
+          ""
+        ]
+      }
+    },
+    {
+      "listen": "test",
+      "script": {
+        "type": "text/javascript",
+        "packages": {},
+        "requests": {},
+        "exec": [
+          ""
+        ]
+      }
+    }
+  ],
+  "variable": [
+    {
+      "key": "base_url",
+      "value": "https://official-joke-api.appspot.com"
+    },
+    {
+      "key": "ten_jokes",
+      "value": "[{\"type\":\"general\",\"setup\":\"Can a kangaroo jump higher than the Empire State Building?\",\"punchline\":\"Of course. The Empire State Building can't jump.\",\"id\":80},{\"type\":\"general\",\"setup\":\"What did the mountain climber name his son?\",\"punchline\":\"Cliff.\",\"id\":177},{\"type\":\"general\",\"setup\":\"Why do birds fly south for the winter?\",\"punchline\":\"Because it's too far to walk.\",\"id\":344},{\"type\":\"general\",\"setup\":\"What do you get when you cross a chicken with a skunk?\",\"punchline\":\"A fowl smell!\",\"id\":230},{\"type\":\"general\",\"setup\":\"What do you call a bear with no teeth?\",\"punchline\":\"A gummy bear!\",\"id\":191},{\"type\":\"general\",\"setup\":\"What time did the man go to the dentist?\",\"punchline\":\"Tooth hurt-y.\",\"id\":260},{\"type\":\"programming\",\"setup\":\"Why was the JavaScript developer sad?\",\"punchline\":\"He didn't know how to null his feelings.\",\"id\":420},{\"type\":\"general\",\"setup\":\"How are false teeth like stars?\",\"punchline\":\"They come out at night!\",\"id\":112},{\"type\":\"general\",\"setup\":\"Why didn't the number 4 get into the nightclub?\",\"punchline\":\"Because he is 2 square.\",\"id\":337},{\"type\":\"general\",\"setup\":\"What do prisoners use to call each other?\",\"punchline\":\"Cell phones.\",\"id\":189}]"
+    },
+    {
+      "key": "ids",
+      "value": "[29,105,397,208,17,217,350,239,109,145]"
+    },
+    {
+      "key": "random_joke_id",
+      "value": 29
+    },
+    {
+      "key": "random_number",
+      "value": "2"
+    }
+  ]
+}
