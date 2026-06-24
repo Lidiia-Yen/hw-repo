@@ -1,0 +1,517 @@
+{
+  "info": {
+    "_postman_id": "46f637e3-2ee5-4384-b90f-a2882ce908a5",
+    "name": "Cat API",
+    "schema": "https://schema.getpostman.com/json/collection/v2.1.0/collection.json",
+    "_exporter_id": "8833297"
+  },
+  "item": [
+    {
+      "name": "upload_images",
+      "event": [
+        {
+          "listen": "test",
+          "script": {
+            "exec": [
+              "st(\"Status code is 200\", function () {\r",
+              "    pm.response.to.have.status(200)\r",
+              "});\r",
+              "pm.collectionVariables.set(\"cat_id\", pm.response.json().id);\r",
+              "pm.collectionVariables.set(\"cat_url\", pm.response.json().url);\r",
+              "pm.collectionVariables.set(\"cat_sub_id\", pm.response.json().sub_id);\r",
+              "pm.collectionVariables.set(\"cat_width\", pm.response.json().width);\r",
+              "pm.collectionVariables.set(\"cat_height\", pm.response.json().height);\r",
+              "pm.collectionVariables.set(\"cat_original_filename\", pm.response.json().original_filename);\r",
+              ""
+            ],
+            "type": "text/javascript",
+            "packages": {},
+            "requests": {}
+          }
+        }
+      ],
+      "request": {
+        "method": "POST",
+        "header": [
+          {
+            "key": "x-api-key",
+            "value": "{{cat_api_key}}"
+          }
+        ],
+        "body": {
+          "mode": "formdata",
+          "formdata": [
+            {
+              "type": "file",
+              "key": "file",
+              "src": "/C:/Users/Lidiia/Downloads/cat1.jpg"
+            },
+            {
+              "type": "text",
+              "key": "sub_id",
+              "value": "my-user-1"
+            }
+          ]
+        },
+        "url": {
+          "raw": "{{base_url}}/images/upload",
+          "host": [
+            "{{base_url}}"
+          ],
+          "path": [
+            "images",
+            "upload"
+          ]
+        },
+        "description": "Generated from cURL: curl --location 'https://api.thecatapi.com/v1/images/upload' \\\r\n--header 'x-api-key: DEMO-API-KEY' \\\r\n--form 'file=@\"/Users/aden/Dropbox/Mac/Downloads/bl4.jpeg\"' \\\r\n--form 'sub_id=\"my-user-1\"'"
+      },
+      "response": []
+    },
+    {
+      "name": "add breed to image",
+      "event": [
+        {
+          "listen": "test",
+          "script": {
+            "exec": [
+              "pm.collectionVariables.set('cat_breed_id',pm.response.json().id);\r",
+              "\r",
+              "pm.test(\"Check if the breed ID is set correctly\", function () {\r",
+              "    pm.expect(pm.collectionVariables.get(\"cat_breed_id\")).to.eql(\"abys\");\r",
+              "});"
+            ],
+            "type": "text/javascript",
+            "packages": {},
+            "requests": {}
+          }
+        }
+      ],
+      "request": {
+        "method": "POST",
+        "header": [
+          {
+            "key": "Content-Type",
+            "value": "application/json"
+          },
+          {
+            "key": "x-api-key",
+            "value": "{{cat_api_key}}"
+          }
+        ],
+        "body": {
+          "mode": "raw",
+          "raw": "{\r\n\"breed_id\": \"abys\"\r\n}",
+          "options": {
+            "raw": {
+              "language": "json"
+            }
+          }
+        },
+        "url": {
+          "raw": "{{base_url}}/images/{{cat_id}}/breeds",
+          "host": [
+            "{{base_url}}"
+          ],
+          "path": [
+            "images",
+            "{{cat_id}}",
+            "breeds"
+          ]
+        },
+        "description": "Generated from cURL: curl --location 'https://api.thecatapi.com/v1/images/:image_id/breeds' \\\r\n--header 'Content-Type: application/json' \\\r\n--header 'x-api-key: DEMO-API-KEY' \\\r\n--data '{\r\n\t\"breed_id\": 10\r\n}'"
+      },
+      "response": []
+    },
+    {
+      "name": "get image",
+      "event": [
+        {
+          "listen": "prerequest",
+          "script": {
+            "exec": [
+              ""
+            ],
+            "type": "text/javascript",
+            "packages": {},
+            "requests": {}
+          }
+        },
+        {
+          "listen": "test",
+          "script": {
+            "exec": [
+              "pm.test('Status code 200', function(){",
+              "    pm.response.to.have.status(200)",
+              "});",
+              "",
+              "pm.test('Returned id matches requested id', () => {",
+              "    pm.expect(pm.response.json().id).to.equal(pm.collectionVariables.get(\"cat_id\"))",
+              "});",
+              "",
+              "pm.test('Returned breed matches set breed', () => {",
+              "    pm.expect(pm.response.json().breeds[0].id).to.equal(pm.collectionVariables.get(\"cat_breed_id\"))",
+              "});",
+              "",
+              "pm.test('Returned url matches saved url', () => {",
+              "    pm.expect(pm.response.json().url).to.equal(pm.collectionVariables.get(\"cat_url\"))",
+              "});",
+              ""
+            ],
+            "type": "text/javascript",
+            "packages": {},
+            "requests": {}
+          }
+        }
+      ],
+      "request": {
+        "method": "GET",
+        "header": [
+          {
+            "key": "x-api-key",
+            "value": "{{cat_api_key}}",
+            "type": "text"
+          }
+        ],
+        "url": {
+          "raw": "{{base_url}}/images/{{cat_id}}",
+          "host": [
+            "{{base_url}}"
+          ],
+          "path": [
+            "images",
+            "{{cat_id}}"
+          ]
+        },
+        "description": "Generated from cURL: curl --location 'https://api.thecatapi.com/v1/images/BkIEhN3pG'"
+      },
+      "response": []
+    },
+    {
+      "name": "add to favourites",
+      "event": [
+        {
+          "listen": "test",
+          "script": {
+            "exec": [
+              "pm.test(\"Status code is 200\", function () {\r",
+              "    pm.response.to.have.status(200);\r",
+              "});\r",
+              "\r",
+              "pm.collectionVariables.set('favorites_id', pm.response.json().id);"
+            ],
+            "type": "text/javascript",
+            "packages": {},
+            "requests": {}
+          }
+        }
+      ],
+      "request": {
+        "method": "POST",
+        "header": [
+          {
+            "key": "Content-Type",
+            "value": "application/json"
+          },
+          {
+            "key": "x-api-key",
+            "value": "{{cat_api_key}}"
+          }
+        ],
+        "body": {
+          "mode": "raw",
+          "raw": "{\r\n\t\"image_id\":\"{{cat_id}}\",\r\n\t\"sub_id\": \"{{cat_sub_id}}\"\r\n}",
+          "options": {
+            "raw": {
+              "language": "json"
+            }
+          }
+        },
+        "url": {
+          "raw": "{{base_url}}/favourites",
+          "host": [
+            "{{base_url}}"
+          ],
+          "path": [
+            "favourites"
+          ]
+        },
+        "description": "Generated from cURL: curl --location 'https://api.thecatapi.com/v1/favourites' \\\r\n--header 'Content-Type: application/json' \\\r\n--header 'x-api-key: DEMO-API-KEY' \\\r\n--data '{\r\n\t\"image_id\":\"asf2\",\r\n\t\"sub_id\": \"my-user-1234\"\r\n}'"
+      },
+      "response": []
+    },
+    {
+      "name": "vote for image",
+      "event": [
+        {
+          "listen": "test",
+          "script": {
+            "exec": [
+              "pm.test(\"Status code is 200\", function () {\r",
+              "    pm.response.to.have.status(201);\r",
+              "});\r",
+              "\r",
+              "pm.test(\"Image id is correct\", function () {\r",
+              "    const json = pm.response.json();\r",
+              "    pm.expect(json.image_id).to.eql(pm.collectionVariables.get(\"cat_id\"));\r",
+              "});\r",
+              "\r",
+              "pm.collectionVariables.set('cat_vote_id', pm.response.json().id);"
+            ],
+            "type": "text/javascript",
+            "packages": {},
+            "requests": {}
+          }
+        }
+      ],
+      "request": {
+        "method": "POST",
+        "header": [
+          {
+            "key": "Content-Type",
+            "value": "application/json"
+          },
+          {
+            "key": "x-api-key",
+            "value": "{{cat_api_key}}"
+          }
+        ],
+        "body": {
+          "mode": "raw",
+          "raw": "{\r\n\t\"image_id\":\"{{cat_id}}\",\r\n\t\"sub_id\": \"{{cat_sub_id}}\",\r\n    \"value\":1\r\n}",
+          "options": {
+            "raw": {
+              "language": "json"
+            }
+          }
+        },
+        "url": {
+          "raw": "{{base_url}}/votes",
+          "host": [
+            "{{base_url}}"
+          ],
+          "path": [
+            "votes"
+          ]
+        },
+        "description": "Generated from cURL: curl --location 'https://api.thecatapi.com/v1/votes' \\\r\n--header 'Content-Type: application/json' \\\r\n--header 'x-api-key: DEMO-API-KEY' \\\r\n--data '{\r\n\t\"image_id\":\"asf2\",\r\n\t\"sub_id\": \"my-user-1234\",\r\n    \"value\":1\r\n}'"
+      },
+      "response": []
+    },
+    {
+      "name": "get breed by image id",
+      "event": [
+        {
+          "listen": "test",
+          "script": {
+            "exec": [
+              "pm.test(\"Status code is 200\", function () {\r",
+              "    pm.response.to.have.status(200);\r",
+              "});\r",
+              "\r",
+              "pm.test(\"Image id is correct\", function () {\r",
+              "    const json = pm.response.json();\r",
+              "    pm.expect(json[0].id).to.eql(pm.collectionVariables.get(\"cat_breed_id\"));\r",
+              "});"
+            ],
+            "type": "text/javascript",
+            "packages": {},
+            "requests": {}
+          }
+        }
+      ],
+      "request": {
+        "method": "GET",
+        "header": [
+          {
+            "key": "Content-Type",
+            "value": "application/json"
+          },
+          {
+            "key": "x-api-key",
+            "value": "{{cat_api_key}}",
+            "type": "text"
+          }
+        ],
+        "url": {
+          "raw": "{{base_url}}/images/{{cat_id}}/breeds",
+          "host": [
+            "{{base_url}}"
+          ],
+          "path": [
+            "images",
+            "{{cat_id}}",
+            "breeds"
+          ]
+        },
+        "description": "Generated from cURL: curl --location 'https://api.thecatapi.com/v1/images/:image_id/breeds' \\\r\n--header 'Content-Type: application/json'"
+      },
+      "response": []
+    },
+    {
+      "name": "get favourite by id",
+      "event": [
+        {
+          "listen": "test",
+          "script": {
+            "exec": [
+              "pm.test(\"Status code is 200\", function () {",
+              "    pm.response.to.have.status(200);",
+              "});",
+              "",
+              "pm.test(\"Image id is correct\", function () {",
+              "    const json = pm.response.json();",
+              "    pm.expect(json.image.id).to.eql(pm.collectionVariables.get(\"cat_id\"));",
+              "});"
+            ],
+            "type": "text/javascript",
+            "packages": {},
+            "requests": {}
+          }
+        }
+      ],
+      "request": {
+        "method": "GET",
+        "header": [
+          {
+            "key": "Content-Type",
+            "value": "application/json"
+          },
+          {
+            "key": "x-api-key",
+            "value": "{{cat_api_key}}"
+          }
+        ],
+        "url": {
+          "raw": "{{base_url}}/favourites/{{favorites_id}}",
+          "host": [
+            "{{base_url}}"
+          ],
+          "path": [
+            "favourites",
+            "{{favorites_id}}"
+          ]
+        },
+        "description": "Generated from cURL: curl --location 'https://api.thecatapi.com/v1/favourites/:favourite_id' \\\r\n--header 'Content-Type: application/json' \\\r\n--header 'x-api-key: DEMO-API-KEY'"
+      },
+      "response": []
+    },
+    {
+      "name": "get vote by id",
+      "event": [
+        {
+          "listen": "test",
+          "script": {
+            "exec": [
+              "pm.test(\"Status code is 200\", function () {\r",
+              "    pm.response.to.have.status(200);\r",
+              "});\r",
+              "\r",
+              "pm.test(\"Image id is correct\", function () {\r",
+              "    const json = pm.response.json();\r",
+              "    pm.expect(json.image.id).to.eql(pm.collectionVariables.get(\"cat_id\"));\r",
+              "});"
+            ],
+            "type": "text/javascript",
+            "packages": {},
+            "requests": {}
+          }
+        }
+      ],
+      "request": {
+        "method": "GET",
+        "header": [
+          {
+            "key": "Content-Type",
+            "value": "application/json"
+          },
+          {
+            "key": "x-api-key",
+            "value": "{{cat_api_key}}"
+          }
+        ],
+        "url": {
+          "raw": "{{base_url}}/votes/{{cat_vote_id}}}}",
+          "host": [
+            "{{base_url}}"
+          ],
+          "path": [
+            "votes",
+            "{{cat_vote_id}}}}"
+          ]
+        },
+        "description": "Generated from cURL: curl --location 'https://api.thecatapi.com/v1/votes/:vote_id' \\\r\n--header 'Content-Type: application/json' \\\r\n--header 'x-api-key: DEMO-API-KEY'"
+      },
+      "response": []
+    }
+  ],
+  "event": [
+    {
+      "listen": "prerequest",
+      "script": {
+        "type": "text/javascript",
+        "packages": {},
+        "requests": {},
+        "exec": [
+          ""
+        ]
+      }
+    },
+    {
+      "listen": "test",
+      "script": {
+        "type": "text/javascript",
+        "packages": {},
+        "requests": {},
+        "exec": [
+          ""
+        ]
+      }
+    }
+  ],
+  "variable": [
+    {
+      "key": "cat_api_key",
+      "secret": true
+    },
+    {
+      "key": "cat_id",
+      "value": ""
+    },
+    {
+      "key": "cat_url",
+      "value": ""
+    },
+    {
+      "key": "cat_sub_id",
+      "value": ""
+    },
+    {
+      "key": "cat_width",
+      "value": ""
+    },
+    {
+      "key": "cat_height",
+      "value": ""
+    },
+    {
+      "key": "cat_original_filename",
+      "value": ""
+    },
+    {
+      "key": "favorites_id",
+      "value": ""
+    },
+    {
+      "key": "cat_breed_id",
+      "value": ""
+    },
+    {
+      "key": "cat_vote_id",
+      "value": ""
+    },
+    {
+      "key": "base_url",
+      "value": ""
+    }
+  ]
+}
