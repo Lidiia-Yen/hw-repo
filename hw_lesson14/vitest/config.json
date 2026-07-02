@@ -1,0 +1,5 @@
+{
+    "theJokeApi": {
+        "baseUrl": "https://official-joke-api.appspot.com"
+    }
+}

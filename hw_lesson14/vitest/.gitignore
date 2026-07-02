@@ -1,0 +1,15 @@
+node_modules/
+.vscode/
+.idea/
+build/
+dist/
+vitest.spec.ts
+user.service.spec.ts
+interact-with-pet-test.spec.ts
+*.log
+user.dto.ts
+user-service.ts
+index.ts
+db.service.ts
+cat.ts
+.env
