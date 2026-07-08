@@ -1,0 +1,26 @@
+Test_1_css
+1. У поле header input[name="search"] ввести текст "apple"
+2. Клікнути на кнопку button[data-testid="search-suggest-submit"]
+3. Чекати на елемент ul[class="portal-grid portal-grid_type_1_4"] li:nth-child(1)
+4. Чекати на елемент і перевірити, що h1.portal__heading текст="Apple"
+
+Test_2_сss
+1. Клікнути на картинку a>img[alt="iPhone"]
+2. Чекати div>h1
+3. Чекати на елемент і перевірити, що текст хедера  div>h1="Apple iPhone"
+
+
+Test_1_xpath
+1. У поле //*[@data-testid="search-suggest-input"] ввести "apple"
+2. Перевірити, що зявились автосаджести //ul[@data-testid="search-suggest-records"]
+3. Клікнути на перший елемент автосаджеста //rz-search-suggest-content/div/ul/li[1]
+4. Чекати на елемент //rz-catalog-goods[@data-testid="category_goods"]
+5. Чекати на елемент і перевірити, що хедер текст //h1 містить "apple"
+
+
+Test_2_xpath
+1. Клікнути на кнопку Фільтри //rz-catalog-layout-sticky/div/div/button[@type="button"]
+2. Клікнути на перший фільтр -  Продавець //li[@data-testid="filter_open_options_btn"][1]
+3. Клікнути на першу опцію ("Rozetka +") //rz-filter-mobile-options-layout//li[1]/span
+4. Клікнути на кнопку //button[@type="button"][contains(text(),'Показати')]
+5. Чекати на елемент і перевірити, що хедер //h1 містить текст "продавець ROZETKA"
