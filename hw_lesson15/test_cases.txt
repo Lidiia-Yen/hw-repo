@@ -7,7 +7,7 @@ Test_1_css
 Test_2_сss
 1. Клікнути на картинку a>img[alt="iPhone"]
 2. Чекати div>h1
-3. Чекати на елемент і перевірити, що текст хедера  div>h1="Apple iPhone"
+3. Перевірити, що текст хедера "Apple iPhone"
 
 
 Test_1_xpath
